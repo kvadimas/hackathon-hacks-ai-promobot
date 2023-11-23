@@ -1,0 +1,10 @@
+asgiref
+Django
+sqlparse
+djangorestframework
+martor
+python-dotenv
+gunicorn
+drf_spectacular
+psycopg2-binary
+djoser

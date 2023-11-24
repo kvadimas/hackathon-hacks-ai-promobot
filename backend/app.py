@@ -1,12 +1,13 @@
 import timeit
 import logging
-
-import requests
 import uvicorn
-from fastapi import FastAPI, BackgroundTasks
-from fastapi.responses import HTMLResponse
 
-# from ml import model
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.templating import Jinja2Templates
+
+from serializers import ForecastRequest, ForecastResponse
+from model import forecast
 
 
 def setup_logging():
@@ -23,37 +24,28 @@ _logger = logging.getLogger(__name__)
 
 app = FastAPI(version="1.0")
 
+templates = Jinja2Templates(directory="templates")
 
-@app.get("/")
-def read_root():
-    html_content = """
-            <h1>Sales forecast system.</h1>
-            <p><a href="http://127.0.0.1:9000/api/v1/send/">
-              Запустить систему определения категорий
-            </a></p>
-            <p><a href="http://127.0.0.1:9000/docs/">
-              Документация
-            </a></p>
-            """
-    return HTMLResponse(content=html_content)
 
-@app.post("/api/v1/send/")
-async def create_forecast(text: dict):
+@app.get("/", response_class=HTMLResponse)
+async def read_root(request: Request):
+    ''' Демо страница '''
+    return templates.TemplateResponse("index.html")
+
+
+@app.post("/api/v1/send/", response_model=ForecastResponse)
+async def create_forecast(request_body: ForecastRequest):
     '''Запуск системы ml'''
-    result = forecast(text)
-    return result
+    message = request_body.text.strip()
+    if 'text' in message and isinstance(message['text'], str) and message['text'].strip():
+        start_time = timeit.default_timer()
+        result = forecast(message['text'])
+        elapsed_time = timeit.default_timer() - start_time
+        _logger.info(f'Elapsed time: {elapsed_time}')
+        return JSONResponse(content=result, status_code=200)
+    else:
+        raise HTTPException(status_code=400, detail="Invalid input: 'text' must be a non-empty string.")
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=9000)
-
-
-def forecast(text: str) -> dict:
-    '''Логика педсказания'''
-    res = {
-        'group': 'group',
-        'sub': 'sub',
-        'location': 'location',
-        'department': 'department',
-        'text': text['text'],
-    }
-    return res

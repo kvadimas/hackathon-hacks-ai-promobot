@@ -37,7 +37,8 @@ async def read_root(request: Request):
 async def create_forecast(request_body: ForecastRequest):
     '''Запуск системы ml'''
     message = request_body.text.strip()
-    if 'text' in message and isinstance(message['text'], str) and message['text'].strip():
+
+    if message:
         start_time = timeit.default_timer()
         result = forecast(message['text'])
         elapsed_time = timeit.default_timer() - start_time

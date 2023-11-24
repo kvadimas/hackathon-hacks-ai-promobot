@@ -54,5 +54,6 @@ def forecast(text: str) -> dict:
         'sub': 'sub',
         'location': 'location',
         'department': 'department',
+        'text': text['text'],
     }
     return res

@@ -30,22 +30,18 @@ templates = Jinja2Templates(directory="templates")
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
     ''' Демо страница '''
-    return templates.TemplateResponse("index.html")
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 @app.post("/api/v1/send/", response_model=ForecastResponse)
-async def create_forecast(request_body: ForecastRequest):
+async def create_forecast(message: ForecastRequest):
     '''Запуск системы ml'''
-    message = request_body.text.strip()
-
-    if message:
-        start_time = timeit.default_timer()
-        result = forecast(message['text'])
-        elapsed_time = timeit.default_timer() - start_time
-        _logger.info(f'Elapsed time: {elapsed_time}')
-        return JSONResponse(content=result, status_code=200)
-    else:
-        raise HTTPException(status_code=400, detail="Invalid input: 'text' must be a non-empty string.")
+    start_time = timeit.default_timer()
+    result = forecast(message.text.strip())
+    print(result)
+    elapsed_time = timeit.default_timer() - start_time
+    _logger.info(f'Elapsed time: {elapsed_time}')
+    return JSONResponse(content=result, status_code=200)
 
 
 if __name__ == "__main__":

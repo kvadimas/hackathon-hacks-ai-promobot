@@ -1,13 +1,8 @@
 # импорт необходимых библиотек
 
-def forecast(message: str) -> dict:
+def forecast(message: str) -> str:
     '''Логика педсказания'''
-    print(message)
-    res: dict = {
-        'group': 'group',
-        'sub': 'sub',
-        'location': 'location',
-        'department': 'department',
-        'text': message,
-    }
-    return res
+    group='group'
+    sub='sub'
+    department='department'
+    return group, sub, department

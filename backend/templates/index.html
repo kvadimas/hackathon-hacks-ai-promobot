@@ -42,7 +42,7 @@
     </script>
 
     </head>
-    <body>
+    <body class="bg-secondary">
       <nav class="navbar bg-body-tertiary" aria-label="Light offcanvas navbar">
           <div class="container-fluid">
             <a class="navbar-brand" href="#">Demo 'ИИПобеда'</a>
@@ -70,11 +70,13 @@
 
       <section class="my-form">
         <div class="row">
-          <div class="col-lg-6 d-lg-block mx-auto m-5 p-5 border-primary border rounded">
-            <div class="text-center lh-lg">
+          <div class="col-lg-6 d-lg-block mx-auto m-5 p-5 border-primary border rounded bg-light">
+            <div class="text-center lh-lg bg-light">
                 <form onsubmit="return sendFormData();">
-                    <p><label for="text">Введите текст:</label></p>
-                    <p><input type="text" id="text" name="text" required></p>
+                    <h3><label for="text">Введите текст:</label></h3>
+                    <p><div class="form-group">
+                        <input type="text" id="text" name="text" class="form-control form-control-lg" required>
+                      </div></p>
                     <p></p>
                     <p><button type="submit" class="btn btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-envelope-arrow-down" viewBox="0 0 16 16">
@@ -84,6 +86,7 @@
                     </button></p>
                 </form>
                 <div>
+                    <hr>
                     <h2>Ответ:</h2>
                     <p>Группа: <span id="group"></span></p>
                     <p>Подгруппа: <span id="sub"></span></p>

@@ -7,12 +7,9 @@ Original file is located at
     https://colab.research.google.com/drive/1vyx_jYyoRUxos6MRf9_CT9Y1afPlFPY_
 """
 
-!python -m spacy download ru_core_news_lg
+#!python -m spacy download ru_core_news_lg
 import spacy
-import pandas as pd
 import ru_core_news_lg
-import pandas as pd
-import re
 
 import nltk
 nltk.download('stopwords')
@@ -25,41 +22,7 @@ nlp = ru_core_news_lg.load()
 stop_words = list(stopwords.words("russian"))
 stop_words.extend(['Сообщение', 'Текста', 'Текст', 'Здравствуйте', 'Хотел', 'Подтверждаю', 'Добрый', 'День','начать', 'Доброе', 'Утро', 'Вечер', 'Скажите', 'Пожалуйста', 'Сегодня', 'Подскажите', '""', 'Конструкторы', 'Какаие', 'Могу', 'Заранее', 'Прошу', 'Поставьте', 'Устроили', 'Планирую'])
 
-data = pd.read_csv('train_dataset_train.csv', sep=';')
 
-def clean_text(text):
-    text = re.sub('[^а-я,ё, А-Я.]+', ' ', text)
-    text = text.replace(',','')
-    return text
-
-
-stopwords_cleaned = []
-tokens = []
-cleaned_text = []
-
-for text in data['Текст инцидента']:
-    # cleaning
-    text = clean_text(text)
-    cleaned_text.append(text)
-
-    # tokenization
-    text = word_tokenize(text)
-    tokens.append(text)
-
-    text = [word for word in text if word not in stop_words]
-    text = [word for word in text if not word.isupper()]
-    stopwords_cleaned.append(text)
-
-
-data['Text_for_ner'] = stopwords_cleaned
-
-for i in range(len(data['Text_for_ner'])):
-    data['Text_for_ner'][i] = ' '.join(data['Text_for_ner'][i])
-
-data['ner'] = ''
-
-for i in range(len(data)):
-    text = nlp(data['Text_for_ner'][i])
-    data['ner'][i] = text.ents
-
-data.to_csv('data_with_ner.csv', index=False)
+def get_location(message):
+    text = nlp(message)
+    return str(text.ents)

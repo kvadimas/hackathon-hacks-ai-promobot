@@ -6,8 +6,9 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 
-from serializers import ForecastRequest, ForecastResponse
-from model import forecast
+from backend.serializers import ForecastRequest, ForecastResponse
+from backend.model import forecast
+from backend.ner import get_location
 
 
 def setup_logging():
@@ -24,7 +25,7 @@ _logger = logging.getLogger(__name__)
 
 app = FastAPI(version="1.0")
 
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="backend/templates")
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -37,8 +38,15 @@ async def read_root(request: Request):
 async def create_forecast(message: ForecastRequest):
     '''Запуск системы ml'''
     start_time = timeit.default_timer()
-    result = forecast(message.text.strip())
-    print(result)
+    group, sub, department = forecast(message.text.strip())
+    location = get_location(message.text.strip())
+    result: dict = {
+        'group': group,
+        'sub': sub,
+        'location': location,
+        'department': department,
+        'text': message.text.strip(),
+    }
     elapsed_time = timeit.default_timer() - start_time
     _logger.info(f'Elapsed time: {elapsed_time}')
     return JSONResponse(content=result, status_code=200)

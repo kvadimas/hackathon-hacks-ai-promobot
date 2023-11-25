@@ -2,6 +2,7 @@
 
 def forecast(message: str) -> dict:
     '''Логика педсказания'''
+    print(message)
     res: dict = {
         'group': 'group',
         'sub': 'sub',

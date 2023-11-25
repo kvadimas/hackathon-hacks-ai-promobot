@@ -7,8 +7,8 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 
 from serializers import ForecastRequest, ForecastResponse
-# from model import forecast
-from chat import chat_forecast
+from model import forecast
+#from chat import chat_forecast -проверка концепции генеративной системы
 from ner import get_location
 
 
@@ -39,7 +39,7 @@ async def read_root(request: Request):
 async def create_forecast(message: ForecastRequest):
     '''Запуск системы ml'''
     start_time = timeit.default_timer()
-    group, sub, department = chat_forecast(message.text.strip())
+    group, sub, department = forecast(message.text.strip())
     location = get_location(message.text.strip())
     result: dict = {
         'group': group,

@@ -2,7 +2,7 @@
 
 def forecast(message: str) -> str:
     '''Логика педсказания'''
-    group='group'
-    sub='sub'
-    department='department'
+    group='Здравоохранение/Медицина'
+    sub='Диспансеризация'
+    department='Министерство здравоохранения'
     return group, sub, department

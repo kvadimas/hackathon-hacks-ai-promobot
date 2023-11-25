@@ -50,6 +50,7 @@ urllib3==2.1.0
 uvicorn==0.24.0.post1
 wasabi==1.1.2
 weasel==0.3.4
+setuptools
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

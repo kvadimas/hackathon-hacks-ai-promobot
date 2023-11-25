@@ -2,7 +2,7 @@ version: "3"
 
 services:
   ml_promobot:
-    image: kvadimas/foodgram_backend
+    image: kvadimas/promobot
     restart: always
     env_file: .env
     expose:

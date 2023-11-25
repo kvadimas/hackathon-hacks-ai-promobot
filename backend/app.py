@@ -6,9 +6,9 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 
-from backend.serializers import ForecastRequest, ForecastResponse
-from backend.model import forecast
-from backend.ner import get_location
+from .serializers import ForecastRequest, ForecastResponse
+from .model import forecast
+from .ner import get_location
 
 
 def setup_logging():

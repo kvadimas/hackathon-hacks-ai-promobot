@@ -6,9 +6,9 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 
-from .serializers import ForecastRequest, ForecastResponse
-from .model import forecast
-from .ner import get_location
+from serializers import ForecastRequest, ForecastResponse
+from model import forecast
+from ner import get_location
 
 
 def setup_logging():
@@ -25,7 +25,7 @@ _logger = logging.getLogger(__name__)
 
 app = FastAPI(version="1.0")
 
-templates = Jinja2Templates(directory="backend/templates")
+templates = Jinja2Templates(directory="templates")
 
 
 @app.get("/", response_class=HTMLResponse)

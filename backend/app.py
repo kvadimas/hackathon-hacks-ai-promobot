@@ -2,9 +2,11 @@ import timeit
 import logging
 import uvicorn
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
+from fastapi_throttling import ThrottlingMiddleware
+
 
 from serializers import ForecastRequest, ForecastResponse
 from model import forecast
@@ -25,6 +27,7 @@ setup_logging()
 _logger = logging.getLogger(__name__)
 
 app = FastAPI(version="1.0")
+app.add_middleware(ThrottlingMiddleware, limit=100, window=60)
 
 templates = Jinja2Templates(directory="templates")
 
@@ -39,7 +42,8 @@ async def read_root(request: Request):
 async def create_forecast(message: ForecastRequest):
     '''Запуск системы ml'''
     start_time = timeit.default_timer()
-    group, sub, department = forecast(message.text.strip())
+    sub = forecast(message.text.strip())
+    group = department = 'Пока не работает'
     location = get_location(message.text.strip())
     result: dict = {
         'group': group,

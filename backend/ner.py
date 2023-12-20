@@ -8,15 +8,14 @@ Original file is located at
 """
 
 #!python -m spacy download ru_core_news_lg
-import spacy
 import ru_core_news_lg
 
 import nltk
 nltk.download('stopwords')
 from nltk.corpus import stopwords
 stopwords.words("russian")
-from nltk.tokenize import word_tokenize
 nltk.download('punkt')
+from model import prerocess_text_message
 
 nlp = ru_core_news_lg.load()
 stop_words = list(stopwords.words("russian"))
@@ -24,5 +23,6 @@ stop_words.extend(['Сообщение', 'Текста', 'Текст', 'Здра
 
 
 def get_location(message):
-    text = nlp(message)
+    msg_processed = prerocess_text_message(message)
+    text = nlp(msg_processed)
     return str(text.ents)

@@ -6,8 +6,9 @@
 
     <script>
         function sendFormData() {
-            const textValue = document.getElementById('text').value;
-            const data = { text: textValue };
+            //const textValue = document.getElementById('text').value;
+            const textValue = document.querySelector('textarea[name="text"]').value;
+            const data = { "text": textValue };
 
             fetch('/api/v1/send/', {
                 method: 'POST',
@@ -75,8 +76,11 @@
                 <form onsubmit="return sendFormData();">
                     <h3><label for="text">Введите текст:</label></h3>
                     <p><div class="form-group">
+                      <textarea name="text" placeholder="Введите сообщение" class="form-control form-control-lg" required autofocus></textarea>
+                        <!--
                         <input type="text" id="text" name="text" class="form-control form-control-lg" required>
-                      </div></p>
+                        -->
+                    </div></p>
                     <p></p>
                     <p><button type="submit" class="btn btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-envelope-arrow-down" viewBox="0 0 16 16">

@@ -8,4 +8,6 @@ RUN pip3 install --upgrade pip && pip3 install -r /app/requirements.txt --no-cac
 
 COPY . .
 
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "9000"]
+ENV VCAP_APP_PORT=9000
+
+CMD ["python", "app.py"]
